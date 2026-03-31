@@ -1,8 +1,8 @@
 # 🦐 SoulSaying — Give Your AI Bot a Voice
 
-**Clone any voice and let your Feishu bot speak with it.**
+**Clone any voice and let your bot speak with it.**
 
-SoulSaying is an [OpenClaw](https://github.com/openclaw/openclaw) skill that adds voice messaging to your Feishu bot using SiliconFlow's TTS engine with voice cloning support.
+SoulSaying is an [OpenClaw](https://github.com/openclaw/openclaw) skill that adds voice messaging to your bot using SiliconFlow's TTS engine with voice cloning support. Works with **Feishu, Telegram, Discord, and WhatsApp**.
 
 [中文](#中文说明) | [English](#features)
 
@@ -12,7 +12,7 @@ SoulSaying is an [OpenClaw](https://github.com/openclaw/openclaw) skill that add
 
 - 🎤 **Voice Cloning** — Upload a 10-30s audio sample, get a cloned voice
 - 🗣️ **Text-to-Speech** — Convert any text to natural speech
-- 💬 **Feishu Integration** — Send voice messages directly in Feishu DM
+- 💬 **Multi-Platform** — Feishu, Telegram, Discord, WhatsApp
 - 🔀 **Mode Switching** — Users can toggle between text and voice modes
 - 🆓 **Free Tier Available** — SiliconFlow offers free API credits
 - 🇨🇳 **China-friendly** — No VPN needed, all APIs are domestic
@@ -21,7 +21,9 @@ SoulSaying is an [OpenClaw](https://github.com/openclaw/openclaw) skill that add
 
 ```
 User message → Bot generates text → SiliconFlow TTS (cloned voice) → mp3
-  → ffmpeg → opus → Upload to Feishu → Send as audio message
+  → ffmpeg → platform format → Upload → Send as voice message
+
+Supported: Feishu · Telegram · Discord · WhatsApp · Local playback
 ```
 
 ## 📦 Quick Start
@@ -63,6 +65,11 @@ bash skills/skill-soulsaying/scripts/tts.sh "Hello world" /tmp/test.mp3
 
 # Send to Feishu
 bash skills/skill-soulsaying/scripts/speak.sh "你好，语音模式已开启"
+
+# Or Telegram / Discord / WhatsApp
+bash skills/skill-soulsaying/scripts/speak.sh "Hello" telegram
+bash skills/skill-soulsaying/scripts/speak.sh "Hello" discord
+bash skills/skill-soulsaying/scripts/speak.sh "Hello" whatsapp
 ```
 
 ## 🔧 Prerequisites
@@ -71,7 +78,7 @@ bash skills/skill-soulsaying/scripts/speak.sh "你好，语音模式已开启"
 |------------|------------|
 | SiliconFlow API Key | Free at [siliconflow.cn](https://siliconflow.cn) |
 | ffmpeg | `brew install ffmpeg` (macOS) / `apt install ffmpeg` (Linux) |
-| Feishu Bot | Create at [open.feishu.cn](https://open.feishu.cn/app) |
+| A bot (at least one) | [Feishu](https://open.feishu.cn/app) · [Telegram](https://t.me/BotFather) · [Discord](https://discord.com/developers) · [WhatsApp](https://developers.facebook.com) |
 | OpenClaw | [github.com/openclaw/openclaw](https://github.com/openclaw/openclaw) |
 
 ## 📂 Skill Structure
@@ -84,7 +91,10 @@ skill-soulsaying/
 │   ├── clone_voice.sh              # Upload sample → get voice URI
 │   ├── tts.sh                      # Text → speech audio
 │   ├── send_feishu_voice.sh        # Audio → Feishu voice message
-│   ├── speak.sh                    # One-step: text → Feishu voice
+│   ├── send_telegram_voice.sh      # Audio → Telegram voice message
+│   ├── send_discord_voice.sh       # Audio → Discord audio attachment
+│   ├── send_whatsapp_voice.sh      # Audio → WhatsApp voice message
+│   ├── speak.sh                    # One-step: text → platform voice
 │   ├── list_voices.sh              # List your cloned voices
 │   └── delete_voice.sh             # Remove a cloned voice
 └── references/
@@ -117,7 +127,7 @@ Set `VOICE_URI="FunAudioLLM/CosyVoice2-0.5B:bella"` in config.env.
 
 PRs welcome! Ideas for improvement:
 - Support for more TTS providers (Edge TTS, Bark, etc.)
-- Support for more messaging platforms (Telegram, Discord, WeChat)
+- Support for more messaging platforms (Signal, Slack, Line, etc.)
 - Streaming voice for long text
 - Voice effect presets (speed, pitch)
 
@@ -138,7 +148,7 @@ SoulSaying 是一个 [OpenClaw](https://github.com/openclaw/openclaw) 技能，�
 ### 核心功能
 - 🎤 声音克隆 — 上传10-30秒音频，克隆任何声音
 - 🗣️ 文字转语音 — 自然流畅的中文语音
-- 💬 飞书集成 — 直接在飞书私聊中发送语音消息
+- 💬 飞书/Telegram/Discord/WhatsApp 多平台集成
 - 🔀 模式切换 — 用户可在文字和语音模式间切换
 - 🆓 免费可用 — 硅基流动提供免费额度
 - 🇨🇳 国内服务 — 无需VPN，全部国内API

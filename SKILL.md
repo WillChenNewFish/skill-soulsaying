@@ -1,24 +1,34 @@
 ---
 name: skill-soulsaying
-description: "Give your OpenClaw Feishu bot a cloned voice — text-to-speech via SiliconFlow (IndexTTS-2 / CosyVoice2) with voice cloning from a short audio sample. Supports switchable voice/text modes in Feishu DM conversations. Use when: user wants voice replies, TTS, voice cloning, audio messages on Feishu, or asks to give the bot a voice, enable voice mode, clone a voice, 语音模式, 声音克隆, 让机器人说话."
+description: "Give your OpenClaw bot a cloned voice — text-to-speech via SiliconFlow (IndexTTS-2 / CosyVoice2) with voice cloning from a short audio sample. Multi-platform: Feishu, Telegram, Discord, WhatsApp. Supports switchable voice/text modes. Use when: user wants voice replies, TTS, voice cloning, audio messages, or asks to give the bot a voice, enable voice mode, clone a voice, 语音模式, 声音克隆, 让机器人说话."
 ---
 
 # SoulSaying — Voice for Your OpenClaw Bot
 
-Clone any voice from a short audio sample and let your Feishu bot speak with it.
+Clone any voice from a short audio sample and let your bot speak with it.
+
+## Supported Platforms
+
+| Platform | Script | Audio Format |
+|----------|--------|-------------|
+| Feishu / Lark | send_feishu_voice.sh | opus |
+| Telegram | send_telegram_voice.sh | ogg/opus |
+| Discord | send_discord_voice.sh | mp3 |
+| WhatsApp | send_whatsapp_voice.sh | ogg/opus |
+| Local playback | speak.sh "text" local | mp3 |
 
 ## Architecture
 
 ```
 User message → Bot generates text reply → SiliconFlow TTS (cloned voice) → mp3
-  → ffmpeg converts to opus → Upload to Feishu → Send audio message
+  → ffmpeg converts format → Upload to platform → Send audio message
 ```
 
 ## Prerequisites
 
 1. **SiliconFlow API Key** — free tier available at https://siliconflow.cn
 2. **ffmpeg** — install via `brew install ffmpeg` (macOS) or `apt install ffmpeg` (Linux)
-3. **Feishu bot** — with `im:message:create` permission enabled
+3. **A messaging bot** — Feishu, Telegram, Discord, or WhatsApp (at least one)
 4. **A voice sample** — 10–30s clear speech, mp3/wav, no background music
 
 ### Getting a Voice Sample
@@ -87,7 +97,15 @@ Check Feishu — you should receive an audio message from the bot.
 bash scripts/speak.sh "你好呀，语音模式已经开启了"
 ```
 
-This generates TTS and sends to Feishu in one step.
+This generates TTS and sends to your configured platform. Specify platform explicitly:
+
+```bash
+bash scripts/speak.sh "Hello" feishu
+bash scripts/speak.sh "Hello" telegram
+bash scripts/speak.sh "Hello" discord
+bash scripts/speak.sh "Hello" whatsapp
+bash scripts/speak.sh "Hello" local    # just play on speakers
+```
 
 ## Mode Switching
 
